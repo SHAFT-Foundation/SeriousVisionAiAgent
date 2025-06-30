@@ -163,16 +163,211 @@ python start_client.py
 # ✅ Desktop client ready with hotkeys active
 ```
 
-### 🎮 Essential Hotkeys
+## 🚀 **How to Use Vision Agent**
 
-| Hotkey | Action | Description |
-|--------|--------|-------------|
-| `Ctrl+Alt+C` | **Capture Screen** | Analyze current screen content |
-| `Ctrl+Alt+L` | **Repeat Last** | Re-announce previous result |
-| `Ctrl+Alt+M` | **Toggle Monitor** | Enable/disable auto-monitoring |
-| `Ctrl+Alt+↑/↓` | **Verbosity** | Adjust description detail level |
-| `Ctrl+Alt+Space` | **Stop Speech** | Interrupt current announcement |
-| `Ctrl+Alt+F1` | **Help** | Show all available commands |
+### 🎧 **For Audio Users (Primary Interface)**
+
+#### **Step 1: First Launch**
+1. **Start the application** using the commands above
+2. **Listen for startup message**: "Vision Agent started. Global hotkeys active..."
+3. **Verify audio**: You'll hear system status announcements
+
+#### **Step 2: Capture and Analyze Screen Content**
+```
+Press: Ctrl+Alt+C
+├── You'll hear: "Processing screen content..."
+├── Wait 2-3 seconds for analysis
+└── Listen to: Detailed description of what's on screen
+```
+
+**Example Output:**
+> *"The screen shows a web browser with a GitHub repository page. The main heading reads 'Universal Computer Vision Accessibility Agent'. There are 4 tabs open in the browser. The page contains a large README file with formatted text, code examples, and several badges at the top indicating Python 3.11+ and MIT license."*
+
+#### **Step 3: Adjust Detail Level**
+```
+Press: Ctrl+Alt+↑  (More detail)
+Press: Ctrl+Alt+↓  (Less detail)
+```
+
+**Brief Mode:** *"GitHub page with repository README"*  
+**Medium Mode:** *"GitHub repository page showing Universal Computer Vision Accessibility Agent with README documentation and navigation tabs"*  
+**Detailed Mode:** *"Browser window displaying GitHub repository at visionagent/SeriousVisionAiAgent. Main content area shows README.md file with markdown formatting. Header contains repository name, star count of 15, fork count of 3. Navigation includes Code, Issues, Pull requests tabs. Left sidebar shows file tree with directories: desktop_agent, server, shared, config. README content includes installation instructions, API documentation, and architecture diagrams."*
+
+#### **Step 4: Automatic Monitoring**
+```
+Press: Ctrl+Alt+M (Toggle auto-monitoring)
+├── You'll hear: "Monitoring enabled" or "Monitoring disabled"
+└── When enabled: Automatic announcements when screen changes
+```
+
+#### **Step 5: Repeat Information**
+```
+Press: Ctrl+Alt+L
+└── Repeats the last screen analysis without re-processing
+```
+
+#### **Step 6: Speech Controls**
+```
+Press: Ctrl+Alt+Space (Stop current speech)
+Press: Ctrl+Alt+P     (Pause/resume speech)
+```
+
+### 🎮 **Complete Hotkey Reference**
+
+| Hotkey | Action | Audio Feedback |
+|--------|--------|----------------|
+| `Ctrl+Alt+C` | **Capture Screen** | "Processing..." → Full description |
+| `Ctrl+Alt+R` | **Capture Region** | "Select region..." → Region description |
+| `Ctrl+Alt+L` | **Repeat Last** | Re-announces last result |
+| `Ctrl+Alt+M` | **Toggle Monitor** | "Monitoring enabled/disabled" |
+| `Ctrl+Alt+↑` | **More Detail** | "Verbosity: detailed" |
+| `Ctrl+Alt+↓` | **Less Detail** | "Verbosity: brief" |
+| `Ctrl+Alt+Space` | **Stop Speech** | *Silence* |
+| `Ctrl+Alt+P` | **Pause Speech** | *Pause/Resume* |
+| `Ctrl+Alt+T` | **Toggle TTS** | "TTS enabled/disabled" |
+| `Ctrl+Alt+F1` | **Help** | Reads all available commands |
+| `Ctrl+Alt+Q` | **Quit** | "Goodbye" → Application closes |
+
+### 🌐 **Web Interface Usage**
+
+The server provides a REST API accessible at `http://localhost:8000`:
+
+#### **1. API Documentation**
+Visit `http://localhost:8000/docs` for interactive API documentation
+
+#### **2. Health Monitoring**
+```bash
+# Check system status
+curl http://localhost:8000/api/v1/health
+
+# Detailed system metrics
+curl http://localhost:8000/api/v1/health/detailed
+```
+
+#### **3. Process Images via API**
+```bash
+# Upload and process an image file
+curl -X POST "http://localhost:8000/api/v1/process/upload" \
+     -F "file=@screenshot.png" \
+     -F "user_id=test_user" \
+     -F "context=general" \
+     -F "verbosity=medium"
+```
+
+**Response Example:**
+```json
+{
+  "job_id": "550e8400-e29b-41d4-a716-446655440000",
+  "status": "completed",
+  "alt_text": "Screenshot showing a code editor with Python file open...",
+  "detailed_description": "The image shows VS Code editor with main.py file...",
+  "confidence_score": 0.97,
+  "processing_time_ms": 2340,
+  "provider_used": "openai"
+}
+```
+
+### 🎯 **Real-World Usage Scenarios**
+
+#### **Scenario A: Code Review**
+```
+1. Open pull request or code file
+2. Press Ctrl+Alt+C
+3. Listen to: "Python file showing function definitions for user authentication. 
+   Main function on line 45 contains login validation logic with error handling..."
+4. Press Ctrl+Alt+↑ for more technical details
+5. Use Ctrl+Alt+M to monitor as you scroll through files
+```
+
+#### **Scenario B: Document Analysis**
+```
+1. Open PDF, Word doc, or webpage
+2. Press Ctrl+Alt+C
+3. Listen to: "Document titled 'Quarterly Sales Report' with bar chart showing 
+   Q1-Q4 data. Revenue increased 15% year-over-year..."
+4. Press Ctrl+Alt+L to re-hear important details
+```
+
+#### **Scenario C: Presentation Review**
+```
+1. Open PowerPoint or slide deck
+2. Enable monitoring: Ctrl+Alt+M
+3. Navigate slides with arrow keys
+4. Hear automatic descriptions: "Slide 3 of 12: Market Analysis. 
+   Pie chart showing market segments with Technology at 45%..."
+```
+
+#### **Scenario D: Web Browsing**
+```
+1. Navigate to any website
+2. Press Ctrl+Alt+C for page overview
+3. Adjust verbosity based on needs:
+   - Brief: "Amazon product page for laptop"
+   - Detailed: "Amazon.com product page for Dell XPS 13 laptop. 
+     Price $1,299. 4.5 star rating with 2,847 reviews. 
+     Add to cart button prominently displayed..."
+```
+
+### 🔧 **Customizing Your Experience**
+
+#### **Voice Settings**
+Modify `config/default.yaml`:
+```yaml
+accessibility:
+  tts_rate: 200        # Words per minute (150-300)
+  tts_voice: "default" # System voice name
+  default_verbosity: "medium" # brief/medium/detailed
+```
+
+#### **Processing Context**
+Different contexts provide specialized analysis:
+- **general**: Standard descriptions for everyday use
+- **code**: Technical analysis for programming content
+- **academic**: Detailed analysis for research/education
+- **business**: Focus on data, metrics, and business content
+
+#### **Privacy Mode**
+For sensitive content, the system automatically:
+- Detects personal information (SSN, credit cards, emails)
+- Routes to local processing instead of cloud APIs
+- Provides audio confirmation: "Processing locally for privacy"
+
+### 🚨 **Troubleshooting Common Issues**
+
+#### **No Audio Output**
+```bash
+# Check TTS voices available
+python -c "import pyttsx3; engine = pyttsx3.init(); print([v.name for v in engine.getProperty('voices')])"
+
+# Test system audio
+python -c "import pyttsx3; pyttsx3.speak('Test audio output')"
+```
+
+#### **Hotkeys Not Working**
+- **macOS**: Grant Accessibility permissions in System Preferences
+- **Windows**: Run as Administrator if needed
+- **Linux**: Install `python3-dev` packages
+
+#### **Screen Capture Issues**
+- **macOS**: Grant Screen Recording permissions
+- **Windows**: Check Windows Defender settings
+- **Linux**: Install `xorg-dev` and `libxtst6`
+
+#### **API Connection Failed**
+```bash
+# Verify server is running
+curl http://localhost:8000/api/v1/health
+
+# Check server logs
+tail -f logs/vision_agent.log
+```
+
+### 📱 **Mobile Integration** (Coming Soon)
+
+Future mobile apps will provide:
+- Camera-based document scanning
+- Real-time environment description
+- Integration with smartphone accessibility features
 
 ---
 
