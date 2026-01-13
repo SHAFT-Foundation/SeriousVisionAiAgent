@@ -1,4 +1,4 @@
-# 🌟 Universal Computer Vision Accessibility Agent
+# 🌟 Universal Computer Vision Accessibility Agent 
 
 <div align="center">
 
